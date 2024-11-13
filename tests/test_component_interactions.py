@@ -1,8 +1,6 @@
 import pytest
 from app.api import app, db
-from flask import Flask, jsonify
 from unittest.mock import MagicMock
-# Assuming Messages model is imported from your models file
 from app.models import Messages
 import logging
 from unittest.mock import patch
