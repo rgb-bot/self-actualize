@@ -1,15 +1,11 @@
 # Communication Microservice
 
 ## Overview
-A microservice to send messages through multiple channels, supporting email and SMS, with logging.
+A little mock service to send messages through multiple channels, supporting email and SMS, with logging.
 
 ## Setup
-### Docker Setup
-1. Run `docker-compose up --build` to start the service and database.
-
-### Running Locally
-1. Set up a PostgreSQL database and configure `DATABASE_URL` in `config.py`.
-2. Run the application with `python app/api.py`.
+###
+Run `bash setup.sh`
 
 ## API Usage
 ### Send Message
@@ -18,9 +14,24 @@ A microservice to send messages through multiple channels, supporting email and 
 - Payload:
   ```json
   {
-    "type": "email",
-    "recipient": "example@example.com",
+    "type": "email" | "SMS",
+    "recipient": "example@example.com" | "324-234-2343",
     "content": "Hello World"
   }
+  ``````
+  Run this in your terminal:
+  ```
+  curl -X POST http://localhost:5050/sendMessage -H "Content-Type: application/json" -d '{
+  "type": "email",
+  "recipient": "example@example.com",
+  "content": "Why do you drive in a parkway but park in a driveway?"
+  }'
 
- docker exec -it c7c0d08dffd1 /bin/bash
+## Seeing the db
+### Check database to ensure logs are there
+1. Execute `docker ps` and copy and paste the container id for db-container
+2.  `docker exec -it <container_id> /bin/bash`
+3. `psql`
+4. Execute the desired Postgres commands
+## Using Tests
+Run `pytest -s`   
