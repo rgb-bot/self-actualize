@@ -29,9 +29,8 @@ Run `bash setup.sh`
 
 ## Seeing the db
 ### Check database to ensure logs are there
-1. Execute `docker ps` and copy and paste the container id for db-container
-2.  `docker exec -it <container_id> /bin/bash`
-3. `psql`
-4. Execute the desired Postgres commands
+1.  `docker exec -it db-container /bin/bash`
+2. `psql`
+3. Execute the desired Postgres commands (e.g., `\list`)
 ## Using Tests
-Run `pytest -s`   
+Run `pytest -s` 
