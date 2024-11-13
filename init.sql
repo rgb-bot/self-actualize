@@ -1,0 +1,8 @@
+CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(20) NOT NULL,
+    recipient VARCHAR(100) NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
