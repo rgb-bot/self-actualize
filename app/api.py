@@ -1,8 +1,10 @@
 import logging
 from flask import Flask, request, jsonify
 from app.api_validations.validate_all import validate_and_get_response
-from app.models import Messages, db
+from app.models import db
 from app.config import SQLALCHEMY_DATABASE_URI
+from app.services import commit_log
+from sqlalchemy.exc import SQLAlchemyError
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
@@ -26,21 +28,19 @@ def send_message():
         return error_msg
 
     try:
-        # If all validations pass, proceed with the business logic
-        logger.info(f"Validated data: {data}")
-
-        message_type = data.get('type')
-        recipient = data.get('recipient')
-        content = data.get('content')
-        # Log message status
-        log = Messages(type=message_type, recipient=recipient,
-                       content=content, status="success")
-        db.session.add(log)
-        logger.info(f"Adding message: {log}")
-        db.session.commit()
+        log = commit_log(data, logger)
+        logger.debug(f"Commited message to db: {log}")
         return jsonify({"message": "Message Sent"}), 200
+    except SQLAlchemyError as e:
+        logger.error(f"Database error: {str(e)}")
+        db.session.rollback()
+        return jsonify({"error": "Database error occurred"}), 500
+    except ValueError as e:
+        logger.error(f"Value error: {str(e)}")
+        return jsonify({"error": "Invalid data format"}), 400
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
 
 if __name__ == "__main__":
