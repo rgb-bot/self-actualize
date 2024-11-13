@@ -12,8 +12,6 @@ def client():
         # Push the application context
         with app.app_context():
             yield client
-        with app.app_context():
-            db.drop_all()  # Drop tables after the test is done
 
 
 def test_send_message_success(client, mocker, caplog):
