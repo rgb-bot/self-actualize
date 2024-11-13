@@ -1,5 +1,6 @@
 #!/bin/bash
-export PYTHONPATH=$PYTHONPATH:/Users/lukeyeom/Desktop/sendMessage
+export PYTHONPATH=$PYTHONPATH:/sendMessage
+
 
 # Step 1: Start the Docker container using docker-compose
 echo "Starting PostgreSQL container..."
