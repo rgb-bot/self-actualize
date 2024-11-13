@@ -42,7 +42,7 @@ jobs:
           
       - name: Run tests in Docker container
         run: |
-          docker exec -it app-container pytest
+          docker exec $(docker ps -q -f "name=app") pytest
 
       - name: Clean up Docker container
         run: |
